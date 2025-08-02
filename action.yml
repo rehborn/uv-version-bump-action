@@ -1,0 +1,45 @@
+name: 'uv version bump'
+description: 'Bump version with uv and git tag'
+
+inputs:
+  bump:
+    description: Version Bump (major, minor, patch + alpha, beta, rc, post, and dev)
+    required: false
+    default: 'dev'
+
+
+outputs:
+  VERSION:
+    description: "VERSION"
+    value: "v${{ steps.version.outputs.VERSION }}"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
+
+    - name: Version Bump
+      id: version
+      shell: bash
+      run: |
+        OLD_VERSION=$(uv version --short)
+        uv version $(for bump in ${{ inputs.bump }}; do echo -n "--bump $bump "; done)
+        uv lock
+        VERSION=$(uv version --short)
+  
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+  
+        git add pyproject.toml uv.lock
+        git commit -m "bump to v${VERSION}"
+        git push origin main
+  
+        git tag -a v${VERSION} -m v${VERSION}
+        git push origin tag v${VERSION}
+  
+        echo "VERSION BUMP: ${OLD_VERSION} -> ${VERSION}"
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
