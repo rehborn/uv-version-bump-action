@@ -3,9 +3,12 @@ description: 'Bump version with uv and git tag'
 
 inputs:
   bump:
-    description: Version Bump (major, minor, patch + alpha, beta, rc, post, and dev)
+    description: Version Bump (major, minor, patch + alpha, beta, rc, post, and dev, ie "minor dev")
     required: false
-    default: 'dev'
+    default: 'minor'
+  github_token:
+    description: github token for updating pyproject.toml and uv.lock and pushing version as tag
+    required: true
 
 
 outputs:
@@ -32,7 +35,7 @@ runs:
   
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git remote set-url origin https://git:${{ inputs.github_token }}@github.com/${{ github.repository }}
   
         git add pyproject.toml uv.lock
         git commit -m "bump to v${VERSION}"
