@@ -14,7 +14,7 @@ inputs:
 outputs:
   VERSION:
     description: "VERSION"
-    value: "v${{ steps.version.outputs.VERSION }}"
+    value: "${{ steps.version.outputs.VERSION }}"
 
 runs:
   using: "composite"
@@ -38,11 +38,11 @@ runs:
         git remote set-url origin https://git:${{ inputs.github_token }}@github.com/${{ github.repository }}
   
         git add pyproject.toml uv.lock
-        git commit -m "bump to v${VERSION}"
+        git commit -m "bump to version ${VERSION}"
         git push origin main
   
-        git tag -a v${VERSION} -m v${VERSION}
-        git push origin tag v${VERSION}
+        git tag -a ${VERSION} -m "version ${VERSION}"
+        git push origin tag ${VERSION}
   
         echo "VERSION BUMP: ${OLD_VERSION} -> ${VERSION}"
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
