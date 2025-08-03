@@ -13,7 +13,7 @@
 ### minimal example
 ```yaml
   - name: Version Bump
-    uses: rehborn/uv-version-bump-action@main
+    uses: rehborn/uv-version-bump-action@v0.0.1
     with:
       bump: "major dev"
       github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
 
       - name: Version Bump
         id: version
-        uses: rehborn/uv-version-bump-action@main
+        uses: rehborn/uv-version-bump-action@0.0.1
         with:
           bump: ${{ inputs.bump }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
