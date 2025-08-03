@@ -1,5 +1,10 @@
 name: 'uv version bump'
+author: Dominique Rehborn
 description: 'Bump version with uv and git tag'
+branding:
+  icon: chevron-up
+  color: blue
+
 
 inputs:
   bump:
