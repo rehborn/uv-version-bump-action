@@ -11,13 +11,13 @@ and create [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) accordin
 
 ### inputs
 
-| argument         | description                                                                         | default           |
-|------------------|-------------------------------------------------------------------------------------|-------------------|
-| `bump`           | Version Bump (major, minor, patch + alpha, beta, rc, post, and dev, ie "minor dev") | `minor`           |
-| `github_token`   | github token for updating pyproject.toml and uv.lock and pushing version as tag     | -                 |
-| `commit_message` | git commit message                                                                  | `bump to version` |
-| `tag_message`    | git tag message                                                                     | `version`         |
-| `tag_prefix`     | prefix for git tag                                                                  | *empty*           | 
+| argument         | default              | description                                                                         |
+|------------------|----------------------|-------------------------------------------------------------------------------------|
+| `bump`           | `minor`              | Version Bump (major, minor, patch + alpha, beta, rc, post, and dev, ie "minor dev") |
+| `github_token`   | `${{ github.token }}` | GITHUB_TOKEN for updating pyproject.toml and uv.lock and pushing version as tag    |
+| `commit_message` | `bump to version`    | git commit message                                                                  |
+| `tag_message`    | `version`            | git tag message                                                                     |
+| `tag_prefix`     | *empty*              | prefix for git tag                                                                  | 
 
 ### minimal example
 
