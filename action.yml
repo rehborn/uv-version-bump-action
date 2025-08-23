@@ -14,7 +14,18 @@ inputs:
   github_token:
     description: github token for updating pyproject.toml and uv.lock and pushing version as tag
     required: true
-
+  branch:
+    description: repository branch
+    default: 'main'
+  commit_message:
+    description: 'git commit message'
+    default: 'bump to version'
+  tag_message:
+    description: 'git tag message'
+    default: 'version'
+  tag_prefix:
+    description: 'prefix for git tag'
+    default: ''
 
 outputs:
   VERSION:
@@ -41,13 +52,13 @@ runs:
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git remote set-url origin https://git:${{ inputs.github_token }}@github.com/${{ github.repository }}
-  
+        
         git add pyproject.toml uv.lock
-        git commit -m "bump to version ${VERSION}"
-        git push origin main
+        git commit -m "${{ inputs.commit_message }} ${VERSION}"
+        git push origin ${{ inputs.branch }}
   
-        git tag -a ${VERSION} -m "version ${VERSION}"
-        git push origin tag ${VERSION}
+        git tag -a ${{ inputs.tag_prefix }}${VERSION} -m "${{ inputs.tag_message }} ${VERSION}"
+        git push origin tag ${{ inputs.tag_prefix }}${VERSION}
   
         echo "VERSION BUMP: ${OLD_VERSION} -> ${VERSION}"
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
