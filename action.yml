@@ -12,8 +12,8 @@ inputs:
     required: false
     default: 'minor'
   github_token:
-    description: github token for updating pyproject.toml and uv.lock and pushing version as tag
-    required: true
+    description: GITHUB_TOKEN for updating pyproject.toml and uv.lock and pushing version as tag
+    default: ${{ github.token }}
   branch:
     description: repository branch
     default: 'main'
