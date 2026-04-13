@@ -11,13 +11,16 @@ and create [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) accordin
 
 ### inputs
 
-| argument         | default              | description                                                                         |
-|------------------|----------------------|-------------------------------------------------------------------------------------|
-| `bump`           | `minor`              | Version Bump (major, minor, patch + alpha, beta, rc, post, and dev, ie "minor dev") |
-| `github_token`   | `${{ github.token }}` | GITHUB_TOKEN for updating pyproject.toml and uv.lock and pushing version as tag    |
-| `commit_message` | `bump to version`    | git commit message                                                                  |
-| `tag_message`    | `version`            | git tag message                                                                     |
-| `tag_prefix`     | *empty*              | prefix for git tag                                                                  | 
+| argument         | default                                        | description                                                                         |
+|------------------|------------------------------------------------|-------------------------------------------------------------------------------------|
+| `bump`           | `minor`                                        | Version Bump (major, minor, patch + alpha, beta, rc, post, and dev, ie "minor dev") |
+| `github_token`   | `${{ github.token }}`                          | GITHUB_TOKEN for updating pyproject.toml and uv.lock and pushing version as tag     |
+| `commit_message` | `bump to version`                              | git commit message                                                                  |
+| `commit_user`    | `github-actions[bot]`                          | git commit user                                                                     |
+| `commit_email`   | `github-actions[bot]@users.noreply.github.com` | git commit email                                                                    |
+| `remote_host`    | `github.com`                                   | git remote host                                                                     |
+| `tag_message`    | `version`                                      | git tag message                                                                     |
+| `tag_prefix`     | *empty*                                        | prefix for git tag                                                                  | 
 
 ### minimal example
 
@@ -39,6 +42,21 @@ and create [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) accordin
       github_token: ${{ secrets.GITHUB_TOKEN }}
       commit_message: 'Bump Release Version'
       tag_message: 'Release'
+```
+
+### custom commiter and host example
+compatible with forgejo/gitea runner
+```yaml
+      - name: Version Bump
+        id: version
+        uses: https://github.com/rehborn/uv-version-bump-action@v0.0.3
+        with:
+          commit_user: 'bot'
+          commit_email: 'bot@boxnet.eu'
+          remote_host: 'git.boxnet.eu'
+
+          bump: ${{ inputs.bump }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### complete workflow example
@@ -74,7 +92,7 @@ jobs:
 
       - name: Version Bump
         id: version
-        uses: rehborn/uv-version-bump-action@0.0.1
+        uses: rehborn/uv-version-bump-action@v0.0.3
         with:
           bump: ${{ inputs.bump }}
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -20,6 +20,15 @@ inputs:
   commit_message:
     description: 'git commit message'
     default: 'bump to version'
+  commit_user:
+    description: 'commit user'
+    default: 'github-actions[bot]'
+  commit_email:
+    description: 'commit email'
+    default: 'github-actions[bot]@users.noreply.github.com'
+  remote_host:
+    description: 'git remote host'
+    default: 'github.com'
   tag_message:
     description: 'git tag message'
     default: 'version'
@@ -49,9 +58,9 @@ runs:
         uv lock
         VERSION=$(uv version --short)
   
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git remote set-url origin https://git:${{ inputs.github_token }}@github.com/${{ github.repository }}
+        git config --local user.name ${{ inputs.commit_user }}
+        git config --local user.email ${{ inputs.commit_email }}
+        git remote set-url origin https://git:${{ inputs.github_token }}@${{ inputs.remote_host }}/${{ github.repository }}
         
         git add pyproject.toml uv.lock
         git commit -m "${{ inputs.commit_message }} ${VERSION}"
